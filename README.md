@@ -29,8 +29,9 @@ RESULT   	BOOLEAN	Случилась конверсия или нет
 ###### Блок заданий на sql
  1. Отобразить сколько предложений сделал каждый из менеджеров за всю историю
 
-```select 	distinct "NAME",
-			count("CALL_ID") over(partition by "Manager_ID") AS total_calls
+```
+select 	distinct "NAME",
+	count("CALL_ID") over(partition by "Manager_ID") AS total_calls
 from upsale AS u
 left join managers m
 on u."Manager_ID" = m."ID"
