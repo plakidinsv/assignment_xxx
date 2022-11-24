@@ -38,7 +38,7 @@ on u."Manager_ID" = m."ID"
 order by 1;
 ```
 
-![Image alt](https://https://github.com/plakidinsv/assignment_xxx/blob/main/1.jpg?raw=true)
+![Image alt](https://https://github.com/plakidinsv/assignment_xxx/blob/main/1.jpg)
 
 
 2.  Отобразить конверсию предложений в подключения для менеджеров за указанный период времени.
