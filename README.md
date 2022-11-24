@@ -38,8 +38,7 @@ on u."Manager_ID" = m."ID"
 order by 1;
 ```
 
-![Image alt](https://github.com/plakidinsv/assignment_xxx/blob/main/1.jpg) https://github.com/plakidinsv/assignment_xxx/blob/32011f72cd76be6966338480e85d08bee683d993/1.jpg
-
+![Image alt](https://github.com/plakidinsv/assignment_xxx/blob/main/1.jpg) 
 
 2.  Отобразить конверсию предложений в подключения для менеджеров за указанный период времени.
 ```
@@ -56,6 +55,7 @@ from cte
 left join managers m
 on cte."Manager_ID" = m."ID";
 ```
+![Image alt](https://github.com/plakidinsv/assignment_xxx/blob/main/2.jpg) 
 
 3.  Вывести конверсии тех менеджеров, у которых было больше 100 звонков за указанный период времени.
 
@@ -74,6 +74,7 @@ left join managers m
 on cte."Manager_ID" = m."ID"
 where total_calls > 100; -- в данном случае запрос не выведет записей, поскольку тестовая база данных содержит всего 12 строк
 ```
+![Image alt](https://github.com/plakidinsv/assignment_xxx/blob/main/3.jpg) 
 
 4.  Вывести офисы, отсортированные в порядке убывания средней конверсии менеджеров из офиса за всю историю.
 
@@ -97,6 +98,7 @@ left join managers m
 on cte_2."Manager_ID" = m."ID"
 order by 2 desc;
 ```
+![Image alt](https://github.com/plakidinsv/assignment_xxx/blob/main/4.jpg) 
 
 5.  Вывести минимальный порядковый номер звонка клиента с RESULT = Yes, перед которым был RESULT = No для каждого менеджера.
 
@@ -118,6 +120,7 @@ left join managers m
 on cte."Manager_ID" = m."ID"
 where "RESULT" = true and lag = false;
 ```
+![Image alt](https://github.com/plakidinsv/assignment_xxx/blob/main/5.jpg) 
 
 6. Получить для каждого менеджера первое принятое предложение.
 
@@ -130,6 +133,7 @@ on u."Manager_ID" = m."ID"
 where "RESULT" = true
 order by 1;
 ```
+![Image alt](https://github.com/plakidinsv/assignment_xxx/blob/main/6.jpg) 
 
 7. Предложить запрос, показывающий ранее не использованные операторы SQL:
 
@@ -146,6 +150,7 @@ on u."Manager_ID" = m."ID"
 where "RESULT" = true
 order by 1;
 ```
+![Image alt](https://github.com/plakidinsv/assignment_xxx/blob/main/7.jpg) 
 
 8.  Предложить запрос, который покажет интересную или полезную информацию из этих данных:
 
@@ -158,3 +163,4 @@ from upsale u
 where "RESULT" = true
 limit 3;
 ```
+![Image alt](https://github.com/plakidinsv/assignment_xxx/blob/main/8.jpg) 
