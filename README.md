@@ -74,7 +74,6 @@ left join managers m
 on cte."Manager_ID" = m."ID"
 where total_calls > 100; -- в данном случае запрос не выведет записей, поскольку тестовая база данных содержит всего 12 строк
 ```
-![Image alt](https://github.com/plakidinsv/assignment_xxx/blob/main/3.jpg) 
 
 4.  Вывести офисы, отсортированные в порядке убывания средней конверсии менеджеров из офиса за всю историю.
 
