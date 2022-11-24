@@ -26,7 +26,7 @@ FACTOR_ID                  	NUMBER	id фактора
 RESULT   	BOOLEAN	Случилась конверсия или нет
 
 
-###### Блок заданий на sql
+## Блок заданий на sql
  1. Отобразить сколько предложений сделал каждый из менеджеров за всю историю
 
 ```
@@ -39,7 +39,8 @@ order by 1;
 ```
 
 
--- 2.  Отобразить конверсию предложений в подключения для менеджеров за указанный период времени.
+2.  Отобразить конверсию предложений в подключения для менеджеров за указанный период времени.
+```
 with cte as (
 select 	distinct "Manager_ID",
 			count("CALL_ID") over(partition by "Manager_ID") AS total_calls,
@@ -52,9 +53,11 @@ select "NAME",
 from cte
 left join managers m
 on cte."Manager_ID" = m."ID";
+```
 
+3.  Вывести конверсии тех менеджеров, у которых было больше 100 звонков за указанный период времени.
 
--- 3.  Вывести конверсии тех менеджеров, у которых было больше 100 звонков за указанный период времени.
+```
 with cte as (
 select 	distinct "Manager_ID",
 			count("CALL_ID") over(partition by "Manager_ID") AS total_calls,
@@ -68,8 +71,11 @@ from cte
 left join managers m
 on cte."Manager_ID" = m."ID"
 where total_calls > 100; -- в данном случае запрос не выведет записей, поскольку тестовая база данных содержит всего 12 строк
+```
 
--- 4.  Вывести офисы, отсортированные в порядке убывания средней конверсии менеджеров из офиса за всю историю.
+4.  Вывести офисы, отсортированные в порядке убывания средней конверсии менеджеров из офиса за всю историю.
+
+```
 with cte as (
 select 	distinct "Manager_ID",
 			count("CALL_ID") over(partition by "Manager_ID") AS total_calls,
@@ -88,9 +94,11 @@ from cte_2
 left join managers m
 on cte_2."Manager_ID" = m."ID"
 order by 2 desc;
+```
 
+5.  Вывести минимальный порядковый номер звонка клиента с RESULT = Yes, перед которым был RESULT = No для каждого менеджера.
 
--- 5.  Вывести минимальный порядковый номер звонка клиента с RESULT = Yes, перед которым был RESULT = No для каждого менеджера.
+```
 with cte as (
 select "Manager_ID" ,
 		"DT" ,
@@ -106,11 +114,12 @@ select m."NAME" ,
 from cte 
 left join managers m
 on cte."Manager_ID" = m."ID"
-where "RESULT" = true and lag = false
-;
+where "RESULT" = true and lag = false;
+```
 
+6. Получить для каждого менеджера первое принятое предложение.
 
--- 6. Получить для каждого менеджера первое принятое предложение.
+```
 select distinct m."NAME",
 		first_value("FACTOR_ID") over(partition by "Manager_ID" order by "DT") as first_accepted_factor_id
 from upsale u
@@ -118,10 +127,14 @@ left join managers m
 on u."Manager_ID" = m."ID"
 where "RESULT" = true
 order by 1;
+```
 
--- 7. Предложить запрос, показывающий ранее не использованные операторы SQL.
-/* Получить для каждого менеджера первое принятое предложение и дату такого предложения в формате 
- * "Наименование дня недели, название месяца, число месяца, полное наименование месяц, год"*/
+7. Предложить запрос, показывающий ранее не использованные операторы SQL:
+
+Получить для каждого менеджера первое принятое предложение и дату такого предложения в формате:
+"Наименование дня недели, название месяца, число месяца, полное наименование месяц, год"
+
+```
 select distinct m."NAME",
 		first_value("FACTOR_ID") over(partition by "Manager_ID" order by "DT") as first_accepted_factor_id,
 		to_char("DT", 'FMDay, FMDD, FMMonth, YYYY') as first_accepted_factor_date
@@ -130,46 +143,16 @@ left join managers m
 on u."Manager_ID" = m."ID"
 where "RESULT" = true
 order by 1;
+```
 
--- 8.  Предложить запрос, который покажет интересную или полезную информацию из этих данных.
-/* Определить топ-3 клиентов, чаще всего принимающих предложение менеджеров */
+8.  Предложить запрос, который покажет интересную или полезную информацию из этих данных:
+
+Определить топ-3 клиентов, чаще всего принимающих предложение менеджеров
+
+```
 select distinct "CLIENT_ID",
 		count("RESULT") over(partition by "CLIENT_ID") 
 from upsale u 
 where "RESULT" = true
 limit 3;
-
-
-###### Tools:
-
-ETL: dbt as Transformation tool, Apache Airflow - orchestrator  
-DWH DB: PostgreSQL   
-PL: SQL, Python (pandas library)   
-Visualization: Apache Superset/Tableau  
-S3 object storaje: minIO   
-
-## Creating 'Micro-Data-Lake' infrastructure for project
-
-2. Building images
-
-```shell
-docker compose build
-```
-
-2. Initialize the metadata db
-
-```shell
-docker compose run --rm airflow-cli db init
-```
-
-3. Create an admin user
-
-```shell
-docker compose run --rm airflow-cli users create --email airflow@example.com --firstname airflow --lastname airflow --password airflow --username airflow --role Admin
-```
-
-4. Start all services
-
-```shell
-docker compose up -d
 ```
