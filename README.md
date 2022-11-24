@@ -38,6 +38,8 @@ on u."Manager_ID" = m."ID"
 order by 1;
 ```
 
+(https://https://github.com/plakidinsv/assignment_xxx/blob/main/1.jpg?raw=true)
+
 
 2.  Отобразить конверсию предложений в подключения для менеджеров за указанный период времени.
 ```
