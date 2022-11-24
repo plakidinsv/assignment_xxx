@@ -10,10 +10,11 @@
 ##### Таблицы
 managers: список менеджеров
 
-
+![Image alt](https://github.com/plakidinsv/assignment_xxx/blob/main/managers.jpg)
 
 upsale: факты контакта с клиентом
 
+![Image alt](https://github.com/plakidinsv/assignment_xxx/blob/main/upsale.jpg)
 
 ## Блок заданий на sql
  1. Отобразить сколько предложений сделал каждый из менеджеров за всю историю
