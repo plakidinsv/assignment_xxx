@@ -34,13 +34,13 @@ order by 1;
 ```
 with cte as (
 select 	distinct "Manager_ID",
-			count("CALL_ID") over(partition by "Manager_ID") AS total_calls,
-			count("RESULT") filter(where "RESULT" = true) over(partition by "Manager_ID") as res
+	count("CALL_ID") over(partition by "Manager_ID") AS total_calls,
+	count("RESULT") filter(where "RESULT" = true) over(partition by "Manager_ID") as res
 from upsale AS u
 order by 1
 )
 select "NAME",
-		res * 100 / total_calls as manager_cr
+	res * 100 / total_calls as manager_cr
 from cte
 left join managers m
 on cte."Manager_ID" = m."ID";
@@ -52,13 +52,13 @@ on cte."Manager_ID" = m."ID";
 ```
 with cte as (
 select 	distinct "Manager_ID",
-			count("CALL_ID") over(partition by "Manager_ID") AS total_calls,
-			count("RESULT") filter(where "RESULT" = true) over(partition by "Manager_ID") as res
+	count("CALL_ID") over(partition by "Manager_ID") AS total_calls,
+	count("RESULT") filter(where "RESULT" = true) over(partition by "Manager_ID") as res
 from upsale AS u
 order by 1
 )
 select "Manager_ID",
-		res * 100 / total_calls as manager_cr
+	res * 100 / total_calls as manager_cr
 from cte
 left join managers m
 on cte."Manager_ID" = m."ID"
@@ -72,18 +72,18 @@ where total_calls > 100;
 ```
 with cte as (
 select 	distinct "Manager_ID",
-			count("CALL_ID") over(partition by "Manager_ID") AS total_calls,
-			count("RESULT") filter(where "RESULT" = true) over(partition by "Manager_ID") as res
+	count("CALL_ID") over(partition by "Manager_ID") AS total_calls,
+	count("RESULT") filter(where "RESULT" = true) over(partition by "Manager_ID") as res
 from upsale AS u
 order by 1
 ),
 cte_2 as (
 select "Manager_ID",
-		res * 100 / total_calls as manager_cr
+	res * 100 / total_calls as manager_cr
 from cte
 )
-select distinct "OFFICE",
-		avg(manager_cr) over(partition by "OFFICE") as avg_cr
+select 	distinct "OFFICE",
+	avg(manager_cr) over(partition by "OFFICE") as avg_cr
 from cte_2
 left join managers m
 on cte_2."Manager_ID" = m."ID"
@@ -96,16 +96,16 @@ order by 2 desc;
 ```
 with cte as (
 select "Manager_ID" ,
-		"DT" ,
-		"RESULT" ,
-		"CALL_ID" ,
-		row_number() over (partition by "Manager_ID" order by "DT", "CALL_ID") as call_rank,
-		lag("RESULT") over(partition by "Manager_ID")
+	"DT" ,
+	"RESULT" ,
+	"CALL_ID" ,
+	row_number() over (partition by "Manager_ID" order by "DT", "CALL_ID") as call_rank,
+	lag("RESULT") over(partition by "Manager_ID")
 from upsale u
 )
 select m."NAME" ,
-		"CALL_ID",
-		first_value(call_rank) over (partition by cte."Manager_ID" order by call_rank)
+	"CALL_ID",
+	first_value(call_rank) over (partition by cte."Manager_ID" order by call_rank)
 from cte 
 left join managers m
 on cte."Manager_ID" = m."ID"
@@ -116,8 +116,8 @@ where "RESULT" = true and lag = false;
 6. Получить для каждого менеджера первое принятое предложение.
 
 ```
-select distinct m."NAME",
-		first_value("FACTOR_ID") over(partition by "Manager_ID" order by "DT") as first_accepted_factor_id
+select 	distinct m."NAME",
+	first_value("FACTOR_ID") over(partition by "Manager_ID" order by "DT") as first_accepted_factor_id
 from upsale u
 left join managers m 
 on u."Manager_ID" = m."ID"
@@ -132,9 +132,9 @@ order by 1;
 "Наименование дня недели, название месяца, число месяца, полное наименование месяц, год"
 
 ```
-select distinct m."NAME",
-		first_value("FACTOR_ID") over(partition by "Manager_ID" order by "DT") as first_accepted_factor_id,
-		to_char("DT", 'FMDay, FMDD, FMMonth, YYYY') as first_accepted_factor_date
+select 	distinct m."NAME",
+	first_value("FACTOR_ID") over(partition by "Manager_ID" order by "DT") as first_accepted_factor_id,
+	to_char("DT", 'FMDay, FMDD, FMMonth, YYYY') as first_accepted_factor_date
 from upsale u
 left join managers m 
 on u."Manager_ID" = m."ID"
@@ -148,8 +148,8 @@ order by 1;
 Определить топ-3 клиентов, чаще всего принимающих предложение менеджеров
 
 ```
-select distinct "CLIENT_ID",
-		count("RESULT") over(partition by "CLIENT_ID") 
+select 	distinct "CLIENT_ID",
+	count("RESULT") over(partition by "CLIENT_ID") 
 from upsale u 
 where "RESULT" = true
 limit 3;
